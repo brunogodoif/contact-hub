@@ -1,0 +1,8 @@
+server:
+  port: 9092
+
+spring:
+  datasource:
+    url: jdbc:postgresql://contacthub-db:5432/contacthub
+    username: postgres
+    password: postgres

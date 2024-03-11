@@ -1,0 +1,25 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      jdbc:
+        lob.non-contextual-creation: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  output:
+    ansi:
+      enabled: Always
+  jackson:
+    date-format: "yyyy-MM-dd'T'HH:mm:ss.SSS"
+    write-dates-as-timestamps: false
+  logging:
+    level:
+      br.com.brunogodoif: TRACE
+      root: INFO
+      org.springframework.web: DEBUG
+      org.hibernate: INFO
+  application:
+    dateformatter: "yyyy-MM-dd HH:mm:ss"
