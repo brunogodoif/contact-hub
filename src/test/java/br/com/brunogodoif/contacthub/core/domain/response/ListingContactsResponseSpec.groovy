@@ -2,27 +2,13 @@ package br.com.brunogodoif.contacthub.core.domain.response
 
 import br.com.brunogodoif.contacthub.core.domain.ContactDomain
 import br.com.brunogodoif.contacthub.core.domain.ContactTypeEnum
-import br.com.brunogodoif.contacthub.core.domain.pagination.PaginationResponse
 import spock.lang.Specification
 
 import java.time.LocalDateTime
 
 class ListingContactsResponseSpec extends Specification {
 
-    def "Testando criação de ListingContactsResponse com conteúdo e paginação"() {
-        given:
-        def content = createContactDomainList()
-        def pagination = new PaginationResponse(10, 2, 20, 1, 2, 1, true, false)
-
-        when:
-        def listingContactsResponse = new ListingContactsResponse(content, pagination)
-
-        then:
-        listingContactsResponse.content == content
-        listingContactsResponse.pagination == pagination
-    }
-
-    def "Testando criação de ListingContactsResponse sem paginação"() {
+    def "Create a valid ListingContactsResponse with "() {
         given:
         def content = createContactDomainList()
 
@@ -31,7 +17,14 @@ class ListingContactsResponseSpec extends Specification {
 
         then:
         listingContactsResponse.content == content
-        listingContactsResponse.pagination == null
+    }
+
+    def "Create a valid ListingContactsResponse with content empty "() {
+        when:
+        def listingContactsResponse = new ListingContactsResponse(Collections.emptyList())
+
+        then:
+        listingContactsResponse.content == Collections.emptyList()
     }
 
     private List<ContactDomain> createContactDomainList() {

@@ -1,18 +1,17 @@
 package br.com.brunogodoif.contacthub.core.domain.response
 
 import br.com.brunogodoif.contacthub.core.domain.ProfessionalListingDomain
-import br.com.brunogodoif.contacthub.core.domain.pagination.PaginationBuilder
+import br.com.brunogodoif.contacthub.core.domain.pagination.PaginationResponse
 import spock.lang.Specification
 
 import java.time.LocalDateTime
 
 class ListingProfessionalsResponseSpec extends Specification {
 
-    def "Testando criação de ListingProfessionalsResponse com conteúdo e paginação"() {
+    def "Create a valid ListingProfessionalsResponse"() {
         given:
         def content = createProfessionalListingDomainList()
-        def pagination = new PaginationBuilder(10, 2, 20, 1, true, false).build();
-
+        def pagination = new PaginationResponse.PaginationBuilder(10, 2, 20, 1, true, false).build();
 
         when:
         def listingProfessionalsResponse = new ListingProfessionalsResponse(content, pagination)
