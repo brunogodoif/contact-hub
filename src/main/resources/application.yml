@@ -7,7 +7,7 @@ spring:
         lob.non-contextual-creation: true
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
         format_sql: true
   output:
     ansi:
@@ -23,3 +23,13 @@ spring:
       org.hibernate: INFO
   application:
     dateformatter: "yyyy-MM-dd HH:mm:ss"
+
+springdoc:
+  api-docs:
+    path: "/api-docs"
+  swagger-ui:
+    path: "/swagger-ui-custom.html"
+    enabled: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+  writer-with-order-by-keys: false

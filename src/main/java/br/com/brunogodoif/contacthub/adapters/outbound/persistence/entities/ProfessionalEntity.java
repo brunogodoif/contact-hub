@@ -2,9 +2,7 @@ package br.com.brunogodoif.contacthub.adapters.outbound.persistence.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,9 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @Table(name = "professionals")
 public class ProfessionalEntity implements Serializable {
 
@@ -55,4 +51,15 @@ public class ProfessionalEntity implements Serializable {
         this.updatedAt = LocalDateTime.now();
     }
 
+//    @Override
+//    public String toString() {
+//        return "ProfessionalEntity{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", role='" + role + '\'' +
+//                ", birthDate=" + birthDate +
+//                ", createdAt=" + createdAt +
+//                ", updatedAt=" + updatedAt +
+//                '}';
+//    }
 }

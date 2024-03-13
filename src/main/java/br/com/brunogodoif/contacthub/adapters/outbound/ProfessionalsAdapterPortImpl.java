@@ -12,6 +12,7 @@ import br.com.brunogodoif.contacthub.core.domain.request.ProfessionalContactPers
 import br.com.brunogodoif.contacthub.core.domain.request.ProfessionalCreateDomain;
 import br.com.brunogodoif.contacthub.core.domain.request.ProfessionalUpdateDomain;
 import br.com.brunogodoif.contacthub.core.ports.outbound.ProfessionalAdapterPort;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@Log4j2
 public class ProfessionalsAdapterPortImpl implements ProfessionalAdapterPort {
 
     private final ProfessionalRepository professionalRepository;
@@ -45,6 +47,7 @@ public class ProfessionalsAdapterPortImpl implements ProfessionalAdapterPort {
             }
 
             ProfessionalEntity professionalSaved = professionalRepository.save(professionalEntity);
+            log.info("Professional CREATED {}", professionalSaved);
             return ProfessionalDomain.toDomain(professionalSaved);
         } catch (Exception e) {
             throw new DatabaseAccessException(e);
