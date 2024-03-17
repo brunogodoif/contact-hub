@@ -11,7 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "professionals")
 public class ProfessionalEntity implements Serializable {
 
@@ -28,7 +29,7 @@ public class ProfessionalEntity implements Serializable {
     @Column(nullable = false)
     private Date birthDate;
 
-    @OneToMany(mappedBy = "professional", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "professional", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private Set<ContactEntity> contacts;
 
     @Column(nullable = false)

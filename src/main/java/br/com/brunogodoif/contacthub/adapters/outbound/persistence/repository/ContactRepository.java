@@ -13,4 +13,7 @@ public interface ContactRepository extends JpaRepository<ContactEntity, UUID> {
 
     @Query("SELECT c from ContactEntity c WHERE c.professional.id = :professionalId")
     List<ContactEntity> findAllByProfessionalId(@Param("professionalId") UUID professionalId, Sort sort);
+
+    @Query("SELECT COUNT(c) FROM ContactEntity c WHERE c.professional.id = :professionalId")
+    Long countByProfessionalId(@Param("professionalId") UUID professionalId);
 }

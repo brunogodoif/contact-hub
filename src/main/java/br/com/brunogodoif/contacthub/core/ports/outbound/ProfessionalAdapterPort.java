@@ -5,6 +5,7 @@ import br.com.brunogodoif.contacthub.core.domain.ProfessionalDomain;
 import br.com.brunogodoif.contacthub.core.domain.ProfessionalListingDomain;
 import br.com.brunogodoif.contacthub.core.domain.pagination.PaginationRequest;
 import br.com.brunogodoif.contacthub.core.domain.request.ProfessionalCreateDomain;
+import br.com.brunogodoif.contacthub.core.domain.request.ProfessionalSearchListing;
 import br.com.brunogodoif.contacthub.core.domain.request.ProfessionalUpdateDomain;
 import org.springframework.data.domain.Page;
 
@@ -16,7 +17,7 @@ public interface ProfessionalAdapterPort {
 
     boolean update(ProfessionalUpdateDomain professionalToUpdate);
 
-    Page<ProfessionalListingDomain> paginate(PaginationRequest paginationRequest);
+    Page<ProfessionalListingDomain> paginate(ProfessionalSearchListing professionalSearchListing, PaginationRequest paginationRequest);
 
     Optional<ProfessionalDomain> getById(UUID id);
 

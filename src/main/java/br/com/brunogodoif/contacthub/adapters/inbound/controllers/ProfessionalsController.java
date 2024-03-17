@@ -1,12 +1,14 @@
 package br.com.brunogodoif.contacthub.adapters.inbound.controllers;
 
 import br.com.brunogodoif.contacthub.adapters.inbound.controllers.records.request.ProfessionalPersistenceRequest;
+import br.com.brunogodoif.contacthub.adapters.inbound.controllers.records.request.ProfessionalSearchRequest;
 import br.com.brunogodoif.contacthub.adapters.inbound.controllers.records.response.ListingContactsRecord;
 import br.com.brunogodoif.contacthub.adapters.inbound.controllers.records.response.ListingProfessionalsRecordResponse;
 import br.com.brunogodoif.contacthub.adapters.inbound.controllers.records.response.ProfessionalRecordResponse;
 import br.com.brunogodoif.contacthub.core.domain.ProfessionalDomain;
 import br.com.brunogodoif.contacthub.core.domain.pagination.PaginationRequest;
 import br.com.brunogodoif.contacthub.core.domain.request.ProfessionalCreateDomain;
+import br.com.brunogodoif.contacthub.core.domain.request.ProfessionalSearchListing;
 import br.com.brunogodoif.contacthub.core.domain.request.ProfessionalUpdateDomain;
 import br.com.brunogodoif.contacthub.core.domain.response.ListingContactsResponse;
 import br.com.brunogodoif.contacthub.core.domain.response.ListingProfessionalsResponse;
@@ -46,10 +48,12 @@ public class ProfessionalsController {
     @Operation(summary = "List professionals with pagination")
     @GetMapping
     public ResponseEntity<ListingProfessionalsRecordResponse> listProfessionalsPaginate(
+            @ModelAttribute ProfessionalSearchRequest professionalSearchRequest,
             @PageableDefault(page = 1, size = 10, sort = "id", direction = Sort.Direction.ASC) @Parameter(hidden = true) Pageable pageable) {
-        log.info("Receiving request to find professional by filters parameters [{}]", pageable);
+        log.info("Receiving request to find professional by filters parameters [{}], [{}]", professionalSearchRequest, pageable);
+        ProfessionalSearchListing professionalSearchListing = new ProfessionalSearchListing(professionalSearchRequest);
         PaginationRequest paginationRequest = new PaginationRequest(pageable.getPageNumber(), pageable.getPageSize());
-        ListingProfessionalsResponse listingProfessionalsResponse = professionalFindService.findAllWithPaginate(paginationRequest);
+        ListingProfessionalsResponse listingProfessionalsResponse = professionalFindService.findAllWithPaginate(professionalSearchListing, paginationRequest);
         return ResponseEntity.ok(ListingProfessionalsRecordResponse.fromDomain(listingProfessionalsResponse));
     }
 

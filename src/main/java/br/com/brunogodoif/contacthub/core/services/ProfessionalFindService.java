@@ -4,6 +4,7 @@ import br.com.brunogodoif.contacthub.core.domain.ProfessionalDomain;
 import br.com.brunogodoif.contacthub.core.domain.ProfessionalListingDomain;
 import br.com.brunogodoif.contacthub.core.domain.pagination.PaginationRequest;
 import br.com.brunogodoif.contacthub.core.domain.pagination.PaginationResponse;
+import br.com.brunogodoif.contacthub.core.domain.request.ProfessionalSearchListing;
 import br.com.brunogodoif.contacthub.core.domain.response.ListingProfessionalsResponse;
 import br.com.brunogodoif.contacthub.core.ports.inbound.ProfessionalFindServicePort;
 import br.com.brunogodoif.contacthub.core.ports.outbound.ProfessionalAdapterPort;
@@ -24,8 +25,8 @@ public class ProfessionalFindService implements ProfessionalFindServicePort {
     }
 
     @Override
-    public ListingProfessionalsResponse findAllWithPaginate(PaginationRequest paginationRequest) {
-        Page<ProfessionalListingDomain> professionalPaginate = professionalAdapter.paginate(paginationRequest);
+    public ListingProfessionalsResponse findAllWithPaginate(ProfessionalSearchListing professionalSearchListing, PaginationRequest paginationRequest) {
+        Page<ProfessionalListingDomain> professionalPaginate = professionalAdapter.paginate(professionalSearchListing, paginationRequest);
         PaginationResponse pagination = PaginationResponse.getInstance(paginationRequest, Math.toIntExact(professionalPaginate.getTotalElements()));
         return new ListingProfessionalsResponse(professionalPaginate.getContent(), pagination);
     }

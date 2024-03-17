@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
 import java.util.List;
 
-@Schema(description = "Request representing data for creating or updating a professional")
+
 public record ProfessionalPersistenceRequest(
         @Schema(description = "Professional name")
         String name,
