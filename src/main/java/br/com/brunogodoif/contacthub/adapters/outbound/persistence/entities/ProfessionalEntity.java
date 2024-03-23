@@ -52,15 +52,4 @@ public class ProfessionalEntity implements Serializable {
         this.updatedAt = LocalDateTime.now();
     }
 
-//    @Override
-//    public String toString() {
-//        return "ProfessionalEntity{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", role='" + role + '\'' +
-//                ", birthDate=" + birthDate +
-//                ", createdAt=" + createdAt +
-//                ", updatedAt=" + updatedAt +
-//                '}';
-//    }
 }

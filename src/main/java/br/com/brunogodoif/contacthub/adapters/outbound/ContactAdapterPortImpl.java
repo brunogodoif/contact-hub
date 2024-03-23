@@ -1,14 +1,14 @@
 package br.com.brunogodoif.contacthub.adapters.outbound;
 
+import br.com.brunogodoif.contacthub.adapters.outbound.exceptions.ContactNotFoundException;
 import br.com.brunogodoif.contacthub.adapters.outbound.exceptions.DatabaseAccessException;
-import br.com.brunogodoif.contacthub.adapters.outbound.persistence.repository.ContactRepository;
 import br.com.brunogodoif.contacthub.adapters.outbound.persistence.entities.ContactEntity;
 import br.com.brunogodoif.contacthub.adapters.outbound.persistence.entities.ProfessionalEntity;
+import br.com.brunogodoif.contacthub.adapters.outbound.persistence.repository.ContactRepository;
 import br.com.brunogodoif.contacthub.core.domain.ContactDomain;
 import br.com.brunogodoif.contacthub.core.domain.request.ContactCreateDomain;
 import br.com.brunogodoif.contacthub.core.domain.request.ContactUpdateDomain;
 import br.com.brunogodoif.contacthub.core.ports.outbound.ContactAdapterPort;
-import br.com.brunogodoif.contacthub.core.ports.outbound.ProfessionalAdapterPort;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +21,9 @@ import java.util.UUID;
 public class ContactAdapterPortImpl implements ContactAdapterPort {
 
     private final ContactRepository contactRepository;
-    private final ProfessionalAdapterPort professionalAdapter;
 
-    public ContactAdapterPortImpl(ContactRepository contactRepository, ProfessionalAdapterPort professionalAdapter) {
+    public ContactAdapterPortImpl(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
-        this.professionalAdapter = professionalAdapter;
     }
 
     @Override
@@ -40,7 +38,8 @@ public class ContactAdapterPortImpl implements ContactAdapterPort {
 
     @Override
     public boolean update(ContactUpdateDomain contactToUpdate) {
-        Optional<ContactEntity> contactEntity = getExistingContact(contactToUpdate.getId());
+        isContactExisting(contactToUpdate.getId());
+        Optional<ContactEntity> contactEntity = contactRepository.findById(contactToUpdate.getId());
 
         if (contactEntity.isEmpty())
             return false;
@@ -62,31 +61,33 @@ public class ContactAdapterPortImpl implements ContactAdapterPort {
     @Override
     public List<ContactDomain> listAllContactsByProfessionalId(UUID professionalId) {
 
-        List<ContactEntity> all = contactRepository.findAllByProfessionalId(professionalId, Sort.by(Sort.Direction.ASC, "type"));
+        try {
+            List<ContactEntity> all = contactRepository.findAllByProfessionalId(professionalId, Sort.by(Sort.Direction.ASC, "type"));
+            if (all.isEmpty())
+                Collections.emptyList();
 
-        if (all.isEmpty()) {
-            Collections.emptyList();
+            return all
+                    .stream()
+                    .map(ContactDomain::toDomain)
+                    .toList();
+        } catch (Exception e) {
+            throw new DatabaseAccessException(e);
         }
-
-        return all
-                .stream()
-                .map(ContactDomain::toDomain)
-                .toList();
 
     }
 
     @Override
     public Optional<ContactDomain> getById(UUID id) {
-        Optional<ContactEntity> contactEntity = getExistingContact(id);
-        if (contactEntity.isEmpty()) {
-            return Optional.empty();
-        }
+        isContactExisting(id);
+        Optional<ContactEntity> contactEntity = contactRepository.findById(id);
+
         return Optional.of(ContactDomain.toDomain(contactEntity.get()));
     }
 
     @Override
     public boolean deleteById(UUID id) {
         try {
+            isContactExisting(id);
             contactRepository.deleteById(id);
             return true;
         } catch (Exception e) {
@@ -94,15 +95,20 @@ public class ContactAdapterPortImpl implements ContactAdapterPort {
         }
     }
 
-    private Optional<ContactEntity> getExistingContact(UUID id) {
+    private void isContactExisting(UUID id) {
         try {
-            return contactRepository.findById(id);
-        } catch (Exception e) {
+            if (!contactRepository.existsById(id))
+                throw new ContactNotFoundException("Contact with id [" + id + "] not found");
+
+        } catch (ContactNotFoundException e) {
+            throw new ContactNotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
             throw new DatabaseAccessException(e);
         }
     }
 
-    public ContactEntity toEntity(ContactCreateDomain contactCreateDomain) {
+    private ContactEntity toEntity(ContactCreateDomain contactCreateDomain) {
 
         ContactEntity contactEntity = new ContactEntity();
         contactEntity.setType(contactCreateDomain.getType());
