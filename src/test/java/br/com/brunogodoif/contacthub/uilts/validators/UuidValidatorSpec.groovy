@@ -13,7 +13,7 @@ class UuidValidatorSpec extends Specification{
         boolean isValid = UuidValidator.isValidUUID(validUuid)
 
         then: "The result should be true"
-        isValid == true
+        isValid
         noExceptionThrown()
     }
 
