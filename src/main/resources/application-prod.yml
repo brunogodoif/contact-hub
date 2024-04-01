@@ -1,8 +1,32 @@
 server:
-  port: 8082
+  port: 8080
 
 spring:
   datasource:
     url: jdbc:postgresql://localhost:15432/contacthub
     username: postgres
     password: postgres
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+  logging:
+    level:
+      br.com.brunogodoif: INFO
+      root: INFO
+      org:
+        springframework:
+          web: INFO
+          jdbc:
+            core:
+              JdbcTemplate: INFO
+        hibernate:
+          SQL: INFO
+          type:
+            descriptor:
+              sql:
+                BasicBinder: INFO
+          orm:
+            jdbc:
+              bind: INFO
+

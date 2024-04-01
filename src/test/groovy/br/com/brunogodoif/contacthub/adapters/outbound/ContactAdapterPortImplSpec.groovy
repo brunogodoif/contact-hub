@@ -1,5 +1,6 @@
 package br.com.brunogodoif.contacthub.adapters.outbound
 
+
 import br.com.brunogodoif.contacthub.adapters.outbound.exceptions.ContactNotFoundException
 import br.com.brunogodoif.contacthub.adapters.outbound.exceptions.DatabaseAccessException
 import br.com.brunogodoif.contacthub.adapters.outbound.persistence.entities.ContactEntity
@@ -363,6 +364,7 @@ class ContactAdapterPortImplSpec extends Specification {
                 contactEntitySetup.getActive()
         )
     }
+
     private List<ContactEntity> generateContactEntities(int numberOfEntities) {
         List<ContactEntity> entities = new ArrayList<>()
         Faker faker = new Faker()

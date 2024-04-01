@@ -18,6 +18,7 @@ import br.com.brunogodoif.contacthub.core.ports.inbound.ProfessionalPersistenceS
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -48,7 +49,7 @@ public class ProfessionalsController {
     @Operation(summary = "List professionals with pagination")
     @GetMapping
     public ResponseEntity<ListingProfessionalsRecordResponse> listProfessionalsPaginate(
-            @ModelAttribute ProfessionalSearchRequest professionalSearchRequest,
+            @ModelAttribute @Nullable ProfessionalSearchRequest professionalSearchRequest,
             @PageableDefault(page = 1, size = 10, sort = "id", direction = Sort.Direction.ASC) @Parameter(hidden = true) Pageable pageable) {
         log.info("Receiving request to find professional by filters parameters [{}], [{}]", professionalSearchRequest, pageable);
         ProfessionalSearchListing professionalSearchListing = new ProfessionalSearchListing(professionalSearchRequest);

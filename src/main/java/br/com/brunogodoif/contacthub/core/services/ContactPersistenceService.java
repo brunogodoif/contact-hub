@@ -40,13 +40,8 @@ public class ContactPersistenceService implements ContactPersistenceServicePort 
         if (!updated)
             throw new ContactUpdatedException("Failed to update contact with id [" + contactUpdateDomain.getId().toString() + "]");
 
-
-        Optional<ContactDomain> contactDomainOptional = contactAdapter.getById(contactUpdateDomain.getId());
-        if (contactDomainOptional.isPresent())
-            return contactDomainOptional.get();
-        else
-            throw new ContactNotFoundException("Failed to get contact data with id [" + contactUpdateDomain.getId().toString() + "] after update");
-
+        return contactAdapter.getById(contactUpdateDomain.getId())
+                .orElseThrow(() -> new ContactNotFoundException("Failed to get contact data with id [" + contactUpdateDomain.getId().toString() + "] after update"));
     }
 
     @Override

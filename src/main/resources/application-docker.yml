@@ -1,8 +1,31 @@
 server:
-  port: 9092
+  port: 9090
 
 spring:
   datasource:
     url: jdbc:postgresql://contacthub-db:5432/contacthub
     username: postgres
     password: postgres
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+  logging:
+    level:
+      br.com.brunogodoif: INFO
+      root: INFO
+      org:
+        springframework:
+          web: INFO
+          jdbc:
+            core:
+              JdbcTemplate: INFO
+        hibernate:
+          SQL: INFO
+          type:
+            descriptor:
+              sql:
+                BasicBinder: INFO
+          orm:
+            jdbc:
+              bind: INFO

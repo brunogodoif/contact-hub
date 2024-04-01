@@ -1,9 +1,9 @@
-FROM openjdk:17 AS build
+FROM maven:3.8.4 AS build
 WORKDIR /app
 COPY . .
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package
 
-FROM build
+FROM openjdk:17
 WORKDIR /app
 COPY --from=build /app/target/contact-hub.jar /app/contact-hub.jar
 EXPOSE 9092
